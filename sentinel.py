@@ -73,7 +73,7 @@ def main():
         while True:
             current_hash = get_file_hash()
             if current_hash != initial_hash:
-                security_logger.error(f"File has been modified! Expected: {initial_hash}, Got: {current_hash}")
+                security_logger.warning(f"File has been modified! Expected: {initial_hash}, Got: {current_hash}")
             check_process(threshold=10.0)
             check_network()
             print("\nWaiting 10 s for next scan... \n")
@@ -85,5 +85,5 @@ def main():
 if __name__ == "__main__":
     main()
     
-    #test
+    #tests
     
