@@ -2,6 +2,7 @@ import psutil
 import datetime
 import time
 import logging
+import hashlib
 
 def setup_logger(name, log_file, level=logging.INFO):
 
@@ -21,6 +22,18 @@ def setup_logger(name, log_file, level=logging.INFO):
 
 process_logger = setup_logger('process_monitor', 'processes.log')
 network_logger = setup_logger('network_monitor', 'network.log')
+security_logger = setup_logger('security_monitor', 'security.log')
+
+def get_file_hash():
+    sha256_hash = hashlib.sha256()
+    try:
+        with open(__file__, "rb") as f:
+            for byte_block in iter(lambda: f.read(4096), b""):
+                sha256_hash.update(byte_block)
+        return sha256_hash.hexdigest()
+    except Exception as e:
+        security_logger.error(f"Error calculating file hash: {e}")
+        return None
 
 def check_process(threshold=5.0):
     process_logger.info(f"--- Process Audit: {datetime.datetime.now()} ---")
@@ -52,8 +65,15 @@ def check_network():
 def main():
     print("System Sentinel Started.")
     
+    initial_hash = get_file_hash()
+    print(f"Initial file hash: {initial_hash}")
+    security_logger.info(f"Initial file hash: {initial_hash}")
+    
     try:
         while True:
+            current_hash = get_file_hash()
+            if current_hash != initial_hash:
+                security_logger.error(f"File has been modified! Expected: {initial_hash}, Got: {current_hash}")
             check_process(threshold=10.0)
             check_network()
             print("\nWaiting 10 s for next scan... \n")
