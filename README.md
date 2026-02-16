@@ -7,10 +7,12 @@ A lightweight system monitoring security tool written in Python. It audits runni
 - **Process Monitoring**: Scans all active processes and alerts if a process exceeds a defined CPU threshold.
 - **Network Auditing**: Lists all active listening ports (IPv4/IPv6) and identifies potentially malicious activity (e.g., port 4444).
 - **Triple-Logger System**: Separates process logs, network logs and security logs into independent files (`processes.log`, `network.log`, `security.log`) for better data organization and auditing.
+- **Containerized Deployment**: Fully Dockerized for environment isolation and easy deployment.
 - **Graceful Shutdown**: Handles user interruptions (Ctrl+C) clean and safely.
 
 ##  Tech Stack
 - **Language**: Python 3.x
+- **Infrastructure**: Docker
 - **Library**: `psutil` (for cross-platform system information), `hashlib` (Cryptography)
 
 ##  Installation & Usage
